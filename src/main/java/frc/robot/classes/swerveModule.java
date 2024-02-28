@@ -50,6 +50,7 @@ public class swerveModule {
         turningSparkMax.restoreFactoryDefaults();
 
         //drivingSparkMax.setInverted(true);
+        turningSparkMax.setInverted(true);
 
         drivingEncoder = drivingSparkMax.getEncoder();
 
@@ -70,7 +71,7 @@ public class swerveModule {
         drivingSparkMax.setSmartCurrentLimit(moduleConstants.kDrivingMotorCurrentLimit);
         turningSparkMax.setSmartCurrentLimit(moduleConstants.kTurningMotorCurrentLimit);
 
-        turningPIDController = new PIDController(0.0005, 0, 0);
+        turningPIDController = new PIDController(0.01, 0, 0);
          turningPIDController.setIntegratorRange(-1, 1);
         turningPIDController.enableContinuousInput(0, 360);
 
@@ -80,7 +81,10 @@ public class swerveModule {
         drivingEncoder.setPosition(0);
     }
     
-    public SwerveModulePosition getPosition() {return new SwerveModulePosition(drivingEncoder.getPosition(), getRotation2d());}
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(drivingEncoder.getPosition(), getRotation2d());
+    }
+    
     public void setDesiredState(SwerveModuleState desiredState) {
         SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(desiredState, getRotation2d());
         if(Math.abs(optimizedDesiredState.speedMetersPerSecond) < 0.02){
@@ -94,8 +98,16 @@ public class swerveModule {
         SmartDashboard.putNumber(name + " Wheel Goal", optimizedDesiredState.angle.getDegrees());
         SmartDashboard.putNumber(name + " Wheel PID", turningPIDController.calculate(getAngle(), optimizedDesiredState.angle.getDegrees()));
     }
-    public double getAngle(){return rotationEncoder.getAbsolutePosition().getValueAsDouble() * 360;}
-    public double getRawAngle(){        return rotationEncoder.getAbsolutePosition().getValueAsDouble();    }
-    public Rotation2d getRotation2d() {   return Rotation2d.fromDegrees(getAngle());     }
-    public void stopModule(){         drivingSparkMax.stopMotor(); turningSparkMax.stopMotor();    }
+    public double getAngle(){
+        return rotationEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+    }
+    public double getRawAngle(){        
+        return rotationEncoder.getAbsolutePosition().getValueAsDouble();    
+    }
+    public Rotation2d getRotation2d() {   
+        return Rotation2d.fromDegrees(getAngle());     
+    }
+    public void stopModule(){         
+        drivingSparkMax.stopMotor(); turningSparkMax.stopMotor();    
+    }
 }

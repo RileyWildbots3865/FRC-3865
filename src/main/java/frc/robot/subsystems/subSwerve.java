@@ -2,8 +2,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort.Port;
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 //import com.pathplanner.lib.auto.AutoBuilder;
 //import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -55,6 +53,7 @@ public class subSwerve extends SubsystemBase {
 
   public subSwerve() {
     gyro = new AHRS(Port.kUSB1);
+    // warning: thread may reset gyro while trying to read during odomerty intit
     new Thread(() -> {
       try {
         Thread.sleep(1000);

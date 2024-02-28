@@ -23,11 +23,13 @@ public class RobotContainer {
 
   private void configureDriverOne() {
     swerve.setDefaultCommand(
+
+    //This talks to the controller and sends the commands to the swerve drive
       new cmdSwerve_TeleOp(
           swerve,
-          () -> MathUtil.applyDeadband(-driverOne.getLeftY(), 0.01),
-          () -> MathUtil.applyDeadband(-driverOne.getLeftX(), 0.01),
-          () -> MathUtil.applyDeadband(-driverOne.getRightX(), 0.01)));
+          () -> MathUtil.applyDeadband(driverOne.getLeftY(), 0.1),
+          () -> MathUtil.applyDeadband(driverOne.getLeftX(), 0.1),
+          () -> MathUtil.applyDeadband(driverOne.getRightX(), 0.01)));
 
     driverOne.PS().onTrue(new InstantCommand(() -> swerve.zeroHeading()));
   }
